@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Sahabat Terbaik</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #666;
+            font-style: italic;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            border-left: 6px solid #667eea;
+            line-height: 1.8;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #764ba2;
+            margin: 40px 0 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .memories {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .memory-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #f5576c;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .memory-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .memory-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #764ba2;
+            margin-bottom: 10px;
+        }
+
+        .memory-text {
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .appreciation {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .appreciation-item {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .appreciation-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .appreciation-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .appreciation-text {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.05em;
+        }
+
+        .final-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-top: 40px;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .reveal-button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+            font-weight: bold;
+        }
+
+        .reveal-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(245, 87, 108, 0.6);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .floating {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .emoji-float {
+            position: absolute;
+            font-size: 40px;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(180deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating" id="floatingEmojis"></div>
+
+    <div class="container">
+        <div class="card">
+            <div class="header">
+                <h1>Buat Sahabat Terbaik 🤝</h1>
+                <p class="subtitle">Website Spesial dari Hati</p>
+            </div>
+
+            <div class="intro">
+                <p><strong>Yo bro,</strong></p>
+                <br>
+                <p>Aku bikin website sederhana ini buat mu. Mungkin kedengerannya alay, tapi gapapa lah ya sekali-kali aku menghargai dikit  sahabat sendiri wkwk 😂</p>
+                <br>
+                <p>Kamu tau kan kita udah lewatin banyak hal bareng? Yang seru, yang ngakak, yang bikin stress, sampe yang bikin kita ngerasa "Alhamdulillah, untung ada kamu disini." Nah, ini semua aku tulis di sini.</p>
+            </div>
+
+            <h2 class="section-title">Kenangan Yang Gak Akan Pernah Ku Lupa 📝</h2>
+            
+            <div class="memories">
+                <div class="memory-card">
+                    <div class="memory-title">💪 Kamu Ada Saat Aku Lagi Down</div>
+                    <div class="memory-text">
+                        Aku gak akan lupa waktu-waktu aku lagi bad mood atau ada masalah. Kamu selalu ada buat dengerin, bahkan kadang cuma duduk diem bareng aja udah cukup. Kamu gak judge, kamu cuma ada. Dan itu berarti banget buat ku.
+                    </div>
+                </div>
+
+                <div class="memory-card">
+                    <div class="memory-title">😂 Becandaan Absurd Kita</div>
+                    <div class="memory-text">
+                        Jokes kita yang garing abis tapi bikin ketawa sampe sakit perut. Yang orang lain liat kayak "ini orang kenapa sih?", tapi buat kita itu comedy gold. Selera humor kita emang aneh, tapi kita emang gitu.
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button class="reveal-button" onclick="revealMore()">Klik Ini Bro 👊</button>
+            </div>
+
+            <div id="hiddenContent" class="hidden">
+                <h2 class="section-title">Hal-Hal Yang Aku Apresiasi Dari Kamu 🌟</h2>
+                
+                <div class="appreciation">
+                    <div class="appreciation-item">
+                        <div class="appreciation-icon">🎯</div>
+                        <div class="appreciation-text">Kamu selalu jujur . Gak pake basa-basi.</div>
+                    </div>
+                    
+
+                    <div class="appreciation-item">
+                        <div class="appreciation-icon">😎</div>
+                        <div class="appreciation-text">Kamu bikin aku jadi versi yang lebih baik tanpa ngehakimin.</div>
+                    </div>
+
+                    <div class="appreciation-item">
+                        <div class="appreciation-icon">🎪</div>
+                        <div class="appreciation-text">Vibe kita pas banget. Nyaman tanpa perlu sok-sokan.</div>
+                    </div>
+
+                    <div class="appreciation-item">
+                        <div class="appreciation-icon">⚡</div>
+                        <div class="appreciation-text">Kamu bikin hari-hari ku jadi lebih seru & berarti.</div>
+                    </div>
+
+                    <div class="appreciation-item">
+                        <div class="appreciation-icon">🤝</div>
+                        <div class="appreciation-text">Persahabatan kita real, bukan yang toxic atau fake.</div>
+                    </div>
+                </div>
+
+                <div class="final-message">
+                    <p><strong>Intinya gini bro,</strong></p>
+                    <br>
+                    <p>Aku bersyukur punya sahabat kayak kamu. Dalam hidup yang kadang melelahkan ini, kau adalah salah satu konstanta yang bikin aku tetep waras. 😅</p>
+                    <br>
+                    <p>Gak peduli kamu lagi di fase mana, aku akan tetep di sini. Kita bakal terus lewatin banyak hal bareng, dan aku gak sabar buat bikin kenangan-kenangan baru.</p>
+                    <br>
+                    <p><strong>Thanks udah jadi sahabat terbaik, bro. Cheers! 🍻</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function revealMore() {
+            const hidden = document.getElementById('hiddenContent');
+            hidden.classList.remove('hidden');
+            
+            hidden.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            createFloatingEmojis();
+        }
+
+        function createFloatingEmojis() {
+            const emojis = ['🎉', '⭐', '💫', '🎊', '✨', '🌟', '🎈'];
+            const container = document.getElementById('floatingEmojis');
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'emoji-float';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = Math.random() * 100 + '%';
+                    emoji.style.top = Math.random() * 100 + '%';
+                    emoji.style.animationDelay = Math.random() * 2 + 's';
+                    
+                    container.appendChild(emoji);
+                    
+                    setTimeout(() => emoji.remove(), 6000);
+                }, i * 100);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            const container = document.getElementById('floatingEmojis');
+            const emojis = ['🎮', '💪', '🍕', '⚡', '🎯'];
+            
+            for (let i = 0; i < 8; i++) {
+                const emoji = document.createElement('div');
+                emoji.className = 'emoji-float';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = Math.random() * 100 + '%';
+                emoji.style.top = Math.random() * 100 + '%';
+                emoji.style.animationDelay = Math.random() * 3 + 's';
+                
+                container.appendChild(emoji);
+            }
+        });
+    </script>
+</body>
+</html>
